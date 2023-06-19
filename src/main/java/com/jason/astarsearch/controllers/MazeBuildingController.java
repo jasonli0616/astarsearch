@@ -235,4 +235,9 @@ public class MazeBuildingController {
         alert.showAndWait();
     }
 
+    @FXML
+    protected void handleBackButton() throws IOException {
+        App.setRoot("homepage");
+    }
+
 }

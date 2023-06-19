@@ -1,11 +1,13 @@
 package com.jason.astarsearch.controllers;
 
+import com.jason.astarsearch.App;
 import com.jason.astarsearch.objects.Node;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SolvedPathController {
@@ -68,6 +70,11 @@ public class SolvedPathController {
         walls = wallsIn;
         width = widthIn;
         height = heightIn;
+    }
+
+    @FXML
+    protected void handleBackButton() throws IOException {
+        App.setRoot("homepage");
     }
 
 }
