@@ -1,4 +1,4 @@
-package com.jason.astarsearch;
+package com.jason.astarsearch.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;

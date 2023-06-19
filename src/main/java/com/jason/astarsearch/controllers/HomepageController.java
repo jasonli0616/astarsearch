@@ -1,5 +1,6 @@
-package com.jason.astarsearch;
+package com.jason.astarsearch.controllers;
 
+import com.jason.astarsearch.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
