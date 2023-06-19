@@ -130,12 +130,38 @@ public class MazeBuildingController {
 
             // Create checkbox for each width layer
             for (int j = 0; j < height; j++) {
+
                 CheckBox checkBox = new CheckBox();
                 checkBoxes[j][i] = checkBox; // insert to 2D array
+
+                // Disable prohibited nodes
+                Node node = new Node(j, i);
+                if (getProhibitedNodes().contains(node))
+                    checkBox.setDisable(true);
+
                 layer.getChildren().add(checkBox);
             }
             mazeBuildingContainer.getChildren().add(layer);
         }
+    }
+
+    /**
+     * Get all the prohibited nodes, that are already used as the start, end, or walls.
+     * @return prohibited nodes
+     */
+    private ArrayList<Node> getProhibitedNodes() {
+        ArrayList<Node> nodes = new ArrayList<>();
+
+        if (startNode != null)
+            nodes.add(startNode);
+
+        if (endNode != null)
+            nodes.add(endNode);
+
+        if (walls != null)
+            nodes.addAll(walls);
+
+        return nodes;
     }
 
     /**
