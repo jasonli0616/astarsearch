@@ -2,6 +2,7 @@ package com.jason.astarsearch.controllers;
 
 import com.jason.astarsearch.objects.Node;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -67,6 +68,12 @@ public class MazeBuildingController {
 
         ArrayList<Node> selectedNodes = getCheckedBoxes();
 
+        // Ensure correct amount of nodes selected
+        if ((state == 0 || state == 1) && selectedNodes.size() != 1) {
+            showCheckBoxFormatError("Please select exactly one checkbox.");
+            return;
+        }
+
         // Collect data
         switch (state) {
 
@@ -92,10 +99,6 @@ public class MazeBuildingController {
         if (state >= 0 && state <= 2) {
             fillMazeBuildingContainerWithCheckboxes();
         } else {
-            System.out.println("Start node: " + startNode);
-            System.out.println("End node  : " + endNode);
-            System.out.println("Walls     : " + walls);
-
             // TODO: Give to path finding controller
         }
     }
@@ -197,6 +200,12 @@ public class MazeBuildingController {
     protected static void setWidthAndHeight(int setWidth, int setHeight) {
         width = setWidth;
         height = setHeight;
+    }
+
+    private void showCheckBoxFormatError(String error) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, error);
+        alert.setHeaderText("Checkbox format error");
+        alert.showAndWait();
     }
 
 }
