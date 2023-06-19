@@ -41,7 +41,7 @@ public class HomepageController {
         MazeBuildingController.setWidthAndHeight(width, height);
 
         // Change page
-        Main.setRoot("mazebuilding");
+        App.setRoot("mazebuilding");
     }
 
 }
