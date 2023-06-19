@@ -106,6 +106,11 @@ public class MazeBuildingController {
             ArrayList<Node> shortestPath = search.findClosestPath();
             Collections.reverse(shortestPath);
 
+            if (shortestPath.isEmpty()) {
+                new Alert(Alert.AlertType.INFORMATION, "Impossible.").showAndWait();
+                return;
+            }
+
             // Set new controller
             SolvedPathController.setData(shortestPath, wallsNoPerimeter, width, height);
             App.setRoot("solvedpath");
