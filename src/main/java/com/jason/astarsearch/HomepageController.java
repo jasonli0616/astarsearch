@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
+import java.io.IOException;
+
 public class HomepageController {
 
     @FXML
@@ -29,11 +31,17 @@ public class HomepageController {
      * This will get the width and height values from the spinners, and give it to the maze building controller.
      */
     @FXML
-    protected void handleBeginButton() {
+    protected void handleBeginButton() throws IOException {
+
+        // Get width and height
         int width = widthInput.getValue();
         int height = heightInput.getValue();
 
-        // TODO: Give values to maze building controller
+        // Set width and height
+        MazeBuildingController.setWidthAndHeight(width, height);
+
+        // Change page
+        Main.setRoot("mazebuilding");
     }
 
 }
