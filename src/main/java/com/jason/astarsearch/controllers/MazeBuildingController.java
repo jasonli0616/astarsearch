@@ -1,10 +1,13 @@
 package com.jason.astarsearch.controllers;
 
+import com.jason.astarsearch.objects.Node;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.util.ArrayList;
 
 public class MazeBuildingController {
 
@@ -39,6 +42,10 @@ public class MazeBuildingController {
     // 2D array of checkboxes
     private CheckBox[][] checkBoxes;
 
+    private Node startNode;
+    private Node endNode;
+    private ArrayList<Node> walls;
+
     /**
      * Initialize the page.
      */
@@ -58,25 +65,38 @@ public class MazeBuildingController {
     @FXML
     protected void handleNextButton() {
 
+        ArrayList<Node> selectedNodes = getCheckedBoxes();
+
         // Collect data
         switch (state) {
+
+            // Get start node
             case 0:
+                startNode = selectedNodes.get(0);
                 break;
 
+            // Get end node
             case 1:
+                endNode = selectedNodes.get(0);
                 break;
 
+            // Get walls
             case 2:
+                walls = selectedNodes;
                 break;
         }
 
         // Change state
         state++;
 
-        if (state >= 0 && state <= 3) {
+        if (state >= 0 && state <= 2) {
             fillMazeBuildingContainerWithCheckboxes();
         } else {
-            // TODO: Move to next page
+            System.out.println("Start node: " + startNode);
+            System.out.println("End node  : " + endNode);
+            System.out.println("Walls     : " + walls);
+
+            // TODO: Give to path finding controller
         }
     }
 
@@ -88,6 +108,19 @@ public class MazeBuildingController {
      */
     private void fillMazeBuildingContainerWithCheckboxes() {
 
+        // Change action text
+        switch (state) {
+            case 0:
+                actionText.setText("Select start node");
+                break;
+            case 1:
+                actionText.setText("Select end node");
+                break;
+            case 2:
+                actionText.setText("Create walls");
+                break;
+        }
+
         // Clear container
         mazeBuildingContainer.getChildren().clear();
 
@@ -98,11 +131,34 @@ public class MazeBuildingController {
             // Create checkbox for each width layer
             for (int j = 0; j < height; j++) {
                 CheckBox checkBox = new CheckBox();
-                checkBoxes[i][j] = checkBox; // insert to 2D array
+                checkBoxes[j][i] = checkBox; // insert to 2D array
                 layer.getChildren().add(checkBox);
             }
             mazeBuildingContainer.getChildren().add(layer);
         }
+    }
+
+    /**
+     * Get all the checked nodes.
+     * @return checked nodes
+     */
+    private ArrayList<Node> getCheckedBoxes() {
+        ArrayList<Node> checked = new ArrayList<>();
+
+        // Loop through x and y
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+
+                // If checked, create node and add to list
+                CheckBox checkBox = checkBoxes[i][j];
+                if (checkBox.isSelected()) {
+                    Node node = new Node(i, j);
+                    checked.add(node);
+                }
+            }
+        }
+
+        return checked;
     }
 
     /**
