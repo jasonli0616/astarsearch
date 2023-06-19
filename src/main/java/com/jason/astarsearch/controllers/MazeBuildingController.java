@@ -1,5 +1,6 @@
 package com.jason.astarsearch.controllers;
 
+import com.jason.astarsearch.AStarSearch;
 import com.jason.astarsearch.objects.Node;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MazeBuildingController {
 
@@ -76,21 +78,14 @@ public class MazeBuildingController {
 
         // Collect data
         switch (state) {
-
             // Get start node
-            case 0:
-                startNode = selectedNodes.get(0);
-                break;
+            case 0 -> startNode = selectedNodes.get(0);
 
             // Get end node
-            case 1:
-                endNode = selectedNodes.get(0);
-                break;
+            case 1 -> endNode = selectedNodes.get(0);
 
             // Get walls
-            case 2:
-                walls = selectedNodes;
-                break;
+            case 2 -> walls = selectedNodes;
         }
 
         // Change state
@@ -99,6 +94,11 @@ public class MazeBuildingController {
         if (state >= 0 && state <= 2) {
             fillMazeBuildingContainerWithCheckboxes();
         } else {
+            insertPerimeterToWalls();
+
+            AStarSearch search = new AStarSearch(startNode, endNode, walls);
+            ArrayList<Node> shortestPath = search.findClosestPath();
+            Collections.reverse(shortestPath);
             // TODO: Give to path finding controller
         }
     }
@@ -113,26 +113,20 @@ public class MazeBuildingController {
 
         // Change action text
         switch (state) {
-            case 0:
-                actionText.setText("Select start node");
-                break;
-            case 1:
-                actionText.setText("Select end node");
-                break;
-            case 2:
-                actionText.setText("Create walls");
-                break;
+            case 0 -> actionText.setText("Select start node");
+            case 1 -> actionText.setText("Select end node");
+            case 2 -> actionText.setText("Create walls");
         }
 
         // Clear container
         mazeBuildingContainer.getChildren().clear();
 
         // Create HBox for each height layer
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < height; i++) {
             HBox layer = new HBox();
 
             // Create checkbox for each width layer
-            for (int j = 0; j < height; j++) {
+            for (int j = 0; j < width; j++) {
 
                 CheckBox checkBox = new CheckBox();
                 checkBoxes[j][i] = checkBox; // insert to 2D array
@@ -188,6 +182,24 @@ public class MazeBuildingController {
         }
 
         return checked;
+    }
+
+    /**
+     * Insert perimeter into walls list.
+     */
+    private void insertPerimeterToWalls() {
+        ArrayList<Node> perimeter = new ArrayList<>();
+
+        perimeter.add(new Node(-1, -1));
+        for (int i = 0; i <= width; i++) {
+            perimeter.add(new Node(i, -1));
+            perimeter.add(new Node(i, height));
+        }
+        for (int i = 0; i <= height; i++) {
+            perimeter.add(new Node(-1, i));
+            perimeter.add(new Node(width, i));
+        }
+        walls.addAll(perimeter);
     }
 
     /**
