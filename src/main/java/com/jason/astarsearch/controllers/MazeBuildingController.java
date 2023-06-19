@@ -1,6 +1,7 @@
 package com.jason.astarsearch.controllers;
 
 import com.jason.astarsearch.AStarSearch;
+import com.jason.astarsearch.App;
 import com.jason.astarsearch.objects.Node;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -66,7 +68,7 @@ public class MazeBuildingController {
      * This will either move to the next state on this page, or next page.
      */
     @FXML
-    protected void handleNextButton() {
+    protected void handleNextButton() throws IOException {
 
         ArrayList<Node> selectedNodes = getCheckedBoxes();
 
@@ -94,12 +96,20 @@ public class MazeBuildingController {
         if (state >= 0 && state <= 2) {
             fillMazeBuildingContainerWithCheckboxes();
         } else {
+
+            ArrayList<Node> wallsNoPerimeter = new ArrayList<>(walls);
+
             insertPerimeterToWalls();
 
+            // Solve
             AStarSearch search = new AStarSearch(startNode, endNode, walls);
             ArrayList<Node> shortestPath = search.findClosestPath();
             Collections.reverse(shortestPath);
-            // TODO: Give to path finding controller
+
+            // Set new controller
+            SolvedPathController.setData(shortestPath, wallsNoPerimeter, width, height);
+            App.setRoot("solvedpath");
+
         }
     }
 
