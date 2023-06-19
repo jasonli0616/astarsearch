@@ -33,13 +33,13 @@ public class Node {
     public ArrayList<Node> getChildrenNodes() {
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.add(new Node(getX(), getY()-1, this));
-        nodes.add(new Node(getX()-1, getY()-1, this));
-        nodes.add(new Node(getX()+1, getY()-1, this));
+//        nodes.add(new Node(getX()-1, getY()-1, this));
+//        nodes.add(new Node(getX()+1, getY()-1, this));
         nodes.add(new Node(getX()-1, getY(), this));
         nodes.add(new Node(getX()+1, getY(), this));
-        nodes.add(new Node(getX()-1, getY()+1, this));
+//        nodes.add(new Node(getX()-1, getY()+1, this));
         nodes.add(new Node(getX(), getY()+1, this));
-        nodes.add(new Node(getX()+1, getY()+1, this));
+//        nodes.add(new Node(getX()+1, getY()+1, this));
 
         return nodes;
     }
